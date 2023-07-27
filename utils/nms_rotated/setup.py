@@ -7,7 +7,7 @@ from setuptools import find_packages, setup
 import torch
 from torch.utils.cpp_extension import (BuildExtension, CppExtension,
                                        CUDAExtension)
-def make_cuda_ext(name, module, sources, sources_cuda=[]):
+def make_cuda_ext(name, module, sources, sources_cuda=[],sources_cuda_later=[]):
 
     define_macros = []
     extra_compile_args = {'cxx': []}
@@ -20,7 +20,10 @@ def make_cuda_ext(name, module, sources, sources_cuda=[]):
             '-D__CUDA_NO_HALF_CONVERSIONS__',
             '-D__CUDA_NO_HALF2_OPERATORS__',
         ]
-        sources += sources_cuda
+        if torch.__version__ < '1.11' or len(sources_cuda_later) == 0:
+            sources += sources_cuda
+        else:
+            sources += sources_cuda_later
     else:
         print(f'Compiling {name} without CUDA')
         extension = CppExtension
@@ -48,7 +51,12 @@ if __name__ == '__main__':
                 sources_cuda=[
                     'src/nms_rotated_cuda.cu',
                     'src/poly_nms_cuda.cu',
-                ]),
+                ],
+              sources_cuda_later=[
+                    'src/nms_rotated_cuda.cu',
+                    'src/poly_nmx_cuda_1_11.cu',
+                ]
+              ),
         ],
         cmdclass={'build_ext': BuildExtension},
         zip_safe=False)
