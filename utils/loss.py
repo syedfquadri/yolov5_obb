@@ -270,10 +270,11 @@ class ComputeLoss:
             print("feature_wh Type", type(feature_wh), \
                   "gxy Type", type(gxy), "gij Type", \
                   type(gij), "gi Type", type(gi), "gj Type", type(gj), "a Type", type(a), "b Type", type(b), "c Type", type(c), "gaussian_theta_labels Type", type(gaussian_theta_labels))
-            a = a.type(torch.DoubleTensor)
-            b = b.type(torch.DoubleTensor)
+            # a = a.type(torch.DoubleTensor)
+            # b = b.type(torch.DoubleTensor)
             gi = gi.type(torch.DoubleTensor)
             gj = gj.type(torch.DoubleTensor)
+            feature_wh = feature_wh.type(torch.DoubleTensor)
             indices.append((b, a, gj.clamp_(0, feature_wh[1] - 1), gi.clamp_(0, feature_wh[0] - 1)))  # image, anchor, grid indices
             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
             anch.append(anchors[a])  # anchors
