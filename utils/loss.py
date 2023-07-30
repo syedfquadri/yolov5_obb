@@ -267,14 +267,16 @@ class ComputeLoss:
             print('feature_wh', feature_wh, \
                   "gxy", gxy, "gij", \
                   gij, "gi", gi, "gj", gj, "a", a, "b", b, "c", c, "gaussian_theta_labels", gaussian_theta_labels)
-            print("feature_wh Type", type(feature_wh), \
-                  "gxy Type", type(gxy), "gij Type", \
-                  type(gij), "gi Type", type(gi), "gj Type", type(gj), "a Type", type(a), "b Type", type(b), "c Type", type(c), "gaussian_theta_labels Type", type(gaussian_theta_labels))
-            # a = a.type(torch.DoubleTensor)
-            # b = b.type(torch.DoubleTensor)
-            gi = gi.type(torch.DoubleTensor)
-            gj = gj.type(torch.DoubleTensor)
-            feature_wh = feature_wh.type(torch.DoubleTensor)
+            print("feature_wh type", feature_wh.dtype, \
+                    "; gxy type", gxy.dtype, \
+                    "; gij type", gij.dtype, \
+                    "; gi type", gi.dtype, \
+                    "; gj type", gj.dtype, \
+                    "; a type", a.dtype, \
+                    "; b type", b.dtype, \
+                    "; c type", c.dtype, \
+                    "; gaussian_theta_labels type", gaussian_theta_labels.dtype)
+            
             indices.append((b, a, gj.clamp_(0, feature_wh[1] - 1), gi.clamp_(0, feature_wh[0] - 1)))  # image, anchor, grid indices
             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
             anch.append(anchors[a])  # anchors
