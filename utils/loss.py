@@ -264,6 +264,13 @@ class ComputeLoss:
             # Append
             a = t[:, -1].long()  # anchor indices 取整
             # indices.append((b, a, gj.clamp_(0, gain[3] - 1), gi.clamp_(0, gain[2] - 1)))  # image, anchor, grid indices
+            print('feature_wh', feature_wh, \
+                  "gxy", gxy, "gij", \
+                  gij, "gi", gi, "gj", gj, "a", a, "b", b, "c", c, "gaussian_theta_labels", gaussian_theta_labels)
+            print("feature_wh Type", type(feature_wh), \
+                  "gxy Type", type(gxy), "gij Type", \
+                  type(gij), "gi Type", type(gi), "gj Type", type(gj), "a Type", type(a), "b Type", type(b), "c Type", type(c), "gaussian_theta_labels Type", type(gaussian_theta_labels))
+            
             indices.append((b, a, gj.clamp_(0, feature_wh[1] - 1), gi.clamp_(0, feature_wh[0] - 1)))  # image, anchor, grid indices
             tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
             anch.append(anchors[a])  # anchors
